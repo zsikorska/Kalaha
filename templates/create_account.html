@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+    <link href="../static/bootstrap/sign-in/signin.css" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block main %}
+
+<div class="form-signin w-100 m-auto">
+  <form action="" method="POST">
+    <h1 class="h3 mb-3 fw-normal mb-md-5 fs-1">Create account</h1>
+
+    <div class="form-floating text-black">
+      <input type="text" class="form-control" id="floatingInput" placeholder="Nick" required>
+      <label for="floatingInput">Nick</label>
+    </div>
+
+
+    <div class="form-floating text-black">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+      <label for="floatingPassword">Password</label>
+    </div>
+
+    <div class="form-floating text-black">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Repeat password" required>
+      <label for="floatingPassword">Repeat password</label>
+    </div>
+
+    <br><br>
+
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Create account</button>
+
+    <br><br>
+    <h6><a href="{{ url_for('sign_in') }}">Already have an account? Sign in</a></h6>
+    <br><br>
+
+  </form>
+</div>
+
+{% endblock %}

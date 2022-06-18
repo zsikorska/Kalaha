@@ -10,11 +10,11 @@
 {% block main %}
 
 <div class="form-signin w-100 m-auto">
-  <form>
+  <form action="" method="POST">
     <h1 class="h3 mb-3 fw-normal mb-md-5 fs-1">Please sign in</h1>
 
     <div class="form-floating text-black">
-      <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <input type="text" class="form-control" id="floatingInput" placeholder="Nick">
       <label for="floatingInput">Nick</label>
     </div>
 
@@ -23,13 +23,13 @@
       <label for="floatingPassword">Password</label>
     </div>
 
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-    </div>
+    <br><br>
 
     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+
+    <br><br>
+    <h6><a href="{{ url_for('create_account') }}">Don't have an account? Create one</a></h6>
+    <br><br>
 
   </form>
 </div>

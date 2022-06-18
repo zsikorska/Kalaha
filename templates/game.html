@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+.parent {
+display: grid;
+grid-template-columns: repeat(8, 1fr);
+grid-template-rows: repeat(5, 1fr);
+grid-column-gap: 0px;
+grid-row-gap: 20px;
+}
+
+.div1 { grid-area: 4 / 2 / 5 / 3; }
+.div2 { grid-area: 4 / 3 / 5 / 4; }
+.div3 { grid-area: 4 / 4 / 5 / 5; }
+.div4 { grid-area: 4 / 5 / 5 / 6; }
+.div5 { grid-area: 4 / 6 / 5 / 7; }
+.div6 { grid-area: 4 / 7 / 5 / 8; }
+.div7 { grid-area: 3 / 7 / 4 / 8; }
+.div8 { grid-area: 2 / 7 / 3 / 8; }
+.div9 { grid-area: 2 / 6 / 3 / 7; }
+.div10 { grid-area: 2 / 5 / 3 / 6; }
+.div11 { grid-area: 2 / 4 / 3 / 5; }
+.div12 { grid-area: 2 / 3 / 3 / 4; }
+.div13 { grid-area: 2 / 2 / 3 / 3; }
+.div14 { grid-area: 3 / 2 / 4 / 3; }
+    </style>
+{% endblock %}
+
+
+{% block main %}
+
+<div>
+
+<div class="parent">
+<div class="div1">
+    <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="button">x</button>
+</div>
+<div class="div2"> <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="button" >x</button></div>
+<div class="div3"> <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="button">x</button></div>
+<div class="div4"> <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="button">x</button></div>
+<div class="div5"> <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="button">x</button></div>
+<div class="div6"> <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="button">x</button></div>
+
+<div class="div7">
+    <button
+            class="btn btn-lg"
+            style="border-radius: 70%" type="button"
+            disabled
+    >x</button>
+</div>
+
+<div class="div8"> <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="button">x</button></div>
+<div class="div9"> <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="button">x</button></div>
+<div class="div10"> <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="button">x</button></div>
+<div class="div11"> <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="button">x</button></div>
+<div class="div12"> <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="button">x</button></div>
+<div class="div13"> <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="button">x</button></div>
+
+<div class="div14">
+    <button
+            class="btn btn-lg"
+            style="border-radius: 70%" type="button"
+            disabled
+    >x</button>
+</div>
+</div>
+
+</div>
+
+{% endblock %}
