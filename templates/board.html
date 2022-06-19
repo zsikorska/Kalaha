@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import add_navbar %}
 
 {% block head %}
 <style>
@@ -26,26 +27,16 @@ grid-row-gap: 20px;
 .div14 { grid-area: 3 / 2 / 4 / 3; }
 </style>
 
-
-
-    <script>
-
-        function Previous() {
-            window.history.back()
-        }
-
-
-    </script>
-
-
-
 {% endblock %}
 
+{% block header %}
+    {{ add_navbar() }}
+{% endblock %}
 
 {% block main %}
 
 <div>
-<form action="" method="POST" onsubmit="Previous()">
+<form action="" method="POST">
 <div class="parent">
 
     {% for i in range(board| length) %}

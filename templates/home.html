@@ -1,7 +1,27 @@
 {% extends "base.html" %}
+{% from "macros.html" import add_navbar %}
 
+{% block head %}
+
+    <link href="../static/bootstrap/styles/signin.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block header %}
+    {{ add_navbar() }}
+{% endblock %}
 
 {% block main %}
 
+    <div class="form-signin w-100 m-auto">
+    <form action="" method="POST" class="col-auto d-flex flex-column">
+    <h1>Choose mode</h1>
+      <button type="submit" name="play" value="human" class="btn btn-lg btn-secondary fw-bold border-white bg-white mx-md-4 my-md-4">Play with other player</button>
+      <button type="submit" name="play" value="ai" class="btn btn-lg btn-secondary fw-bold border-white bg-white mx-md-4 my-md-4">Play with computer</button>
 
+{% if resume %}
+        <button type="submit" name="play" value="resume" class="btn btn-lg btn-secondary fw-bold border-white bg-white mx-md-4 my-md-4">Resume game</button>
+{% endif %}
+    </form>
+    </div>
 {% endblock %}
