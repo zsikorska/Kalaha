@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+
+{% block main %}
+
+    <h1>Start to play Kalaha for free.</h1>
+      <a href="{{ url_for('create_account') }}" class="btn btn-lg btn-secondary fw-bold border-white bg-white mx-md-4 my-md-4">Create account</a>
+      <a href="{{ url_for('sign_in') }}" class="btn btn-lg btn-secondary fw-bold border-white bg-white mx-md-4 my-md-4">Sign in</a>
+
+{% endblock %}

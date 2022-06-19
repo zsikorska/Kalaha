@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+.parent {
+display: grid;
+grid-template-columns: repeat(8, 1fr);
+grid-template-rows: repeat(5, 1fr);
+grid-column-gap: 0px;
+grid-row-gap: 20px;
+}
+
+.div1 { grid-area: 4 / 2 / 5 / 3; }
+.div2 { grid-area: 4 / 3 / 5 / 4; }
+.div3 { grid-area: 4 / 4 / 5 / 5; }
+.div4 { grid-area: 4 / 5 / 5 / 6; }
+.div5 { grid-area: 4 / 6 / 5 / 7; }
+.div6 { grid-area: 4 / 7 / 5 / 8; }
+.div7 { grid-area: 3 / 7 / 4 / 8; }
+.div8 { grid-area: 2 / 7 / 3 / 8; }
+.div9 { grid-area: 2 / 6 / 3 / 7; }
+.div10 { grid-area: 2 / 5 / 3 / 6; }
+.div11 { grid-area: 2 / 4 / 3 / 5; }
+.div12 { grid-area: 2 / 3 / 3 / 4; }
+.div13 { grid-area: 2 / 2 / 3 / 3; }
+.div14 { grid-area: 3 / 2 / 4 / 3; }
+</style>
+
+
+
+    <script>
+
+        function Previous() {
+            window.history.back()
+        }
+
+
+    </script>
+
+
+
+{% endblock %}
+
+
+{% block main %}
+
+<div>
+<form action="" method="POST" onsubmit="Previous()">
+<div class="parent">
+
+    {% for i in range(board| length) %}
+
+        {% if i == 6 or i == 13 %}
+
+            <div class="div{{ i + 1 }}">
+                <button
+                class="btn btn-lg"
+                style="border-radius: 70%"
+                type="button"
+                disabled
+                >{{ board[i] }}</button>
+            </div>
+
+        {% else %}
+
+            {% if i in moves %}
+                <div class="div{{ i + 1 }}">
+                    <button
+                    class="btn btn-lg btn-secondary fw-bold border-white bg-white"
+                    type="submit"
+                    name="house"
+                    value="{{ i }}"
+                    >{{ board[i] }}</button>
+                </div>
+
+            {% else %}
+                <div class="div{{ i + 1 }}">
+                    <button
+                    class="btn btn-lg"
+                    type="submit"
+                    name="house"
+                    value="{{ i }}"
+                    disabled
+                    >{{ board[i] }}</button>
+                </div>
+
+            {% endif %}
+        {% endif %}
+
+    {% endfor %}
+
+
+
+
+
+</div>
+
+</form>
+</div>
+
+{% endblock %}
