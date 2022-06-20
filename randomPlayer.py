@@ -2,7 +2,7 @@ from player import Player
 import random
 
 
-class RandomPlayer(Player):
+class RandomPlayer():
 
     def __init__(self, first):
         self.first = first

@@ -1,11 +1,15 @@
+import random
+
 from player import Player
+
+DEPTH = 4
 
 
 class AIPlayer(Player):
 
     def __init__(self, first):
         self.first = first
-        self.depth = 4
+        self.level = 0
 
     @property
     def first(self):
@@ -15,7 +19,22 @@ class AIPlayer(Player):
     def first(self, value):
         self._first = value
 
+    @property
+    def level(self):
+        return self._level
+
+    @level.setter
+    def level(self, value):
+        self._level = value
+
     def make_move(self, board):
+        if random.randint(1, 4) < self.level:
+            return self.smart_move(board)
+        else:
+            return self.random_move(board)
+
+    def smart_move(self, board):
+        print('smart')
         list_of_moves = []
         max_diff = float('-inf')
         best_move = -1
@@ -24,10 +43,10 @@ class AIPlayer(Player):
             new_board = board.clone()
             code = new_board.move(house, self.first)
 
-            if code == 1:   # additional move
-                list_of_moves.append((self.min_max_algorithm(new_board, self.depth, True), house))
+            if code == 1:  # additional move
+                list_of_moves.append((self.min_max_algorithm(new_board, DEPTH, True), house))
             else:
-                list_of_moves.append((self.min_max_algorithm(new_board, self.depth - 1, False), house))
+                list_of_moves.append((self.min_max_algorithm(new_board, DEPTH - 1, False), house))
 
         for (diff, move) in list_of_moves:
             if diff > max_diff or (diff == max_diff and move > best_move):
@@ -86,3 +105,16 @@ class AIPlayer(Player):
                     min_diff = diff
 
             return min_diff
+
+    def random_move(self, board):
+        print('random')
+        house = -1
+
+        while not board.check_house(house, self.first):
+            if self.first:
+                house = random.randint(0, 5)
+            else:
+                house = random.randint(7, 12)
+
+        print(house)
+        return house

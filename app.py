@@ -116,6 +116,7 @@ first_player = True
 ai = AIPlayer(False)
 mode = 'human'
 running_game = False
+user_starts = True
 
 
 @app.route('/game', methods=["GET", "POST"])
@@ -157,7 +158,7 @@ def play_with_ai():
     if request.method == 'POST':
         house = int(request.form['house'])
         print(house)
-        code = board.move(house, True)
+        code = board.move(house, user_starts)
         board.print_board()
 
         match code:
@@ -168,25 +169,25 @@ def play_with_ai():
                 return redirect('/gameAI')
     else:
         mode = 'ai'
-        if board.is_end_of_game(True):
-            board.end_of_game(True)
+        if board.is_end_of_game(user_starts):
+            board.end_of_game(user_starts)
             update_statistics()
             running_game = False
             return redirect('/results')
-        return render_template('board.html', moves=board.possible_moves(True), board=board.board)
+        return render_template('board.html', moves=board.possible_moves(user_starts), board=board.board)
 
 
 def ai_move():
     global running_game
 
-    if board.is_end_of_game(False):
-        board.end_of_game(False)
+    if board.is_end_of_game(ai.first):
+        board.end_of_game(ai.first)
         update_statistics()
         running_game = False
         return redirect('/results')
 
     house = ai.make_move(board)
-    code = board.move(house, False)
+    code = board.move(house, ai.first)
     board.print_board()
 
     match code:
@@ -202,19 +203,30 @@ def ai_move():
 def home():
     global first_player
     global running_game
+    global user_starts
 
     if request.method == 'POST':
         if request.form['play'] == 'human':
             board.refresh()
             running_game = True
             first_player = True
+            user_starts = (int(request.form['player']) == 1)
+            print(user_starts)
             return redirect('/game')
 
         elif request.form['play'] == 'ai':
             board.refresh()
             running_game = True
             first_player = True
-            return redirect('/gameAI')
+            user_starts = (int(request.form['player']) == 1)
+            print(user_starts)
+            ai.first = not user_starts
+            ai.level = int(request.form['ai level'])
+
+            if user_starts:
+                return redirect('/gameAI')
+            else:
+                return ai_move()
 
         elif mode == 'human':
             return redirect('/game')
@@ -241,7 +253,10 @@ def results():
                 first_player = True
                 return redirect('/game')
             else:
-                return redirect('/gameAI')
+                if user_starts:
+                    return redirect('/gameAI')
+                else:
+                    return ai_move()
         else:
             return redirect('/home')
     else:
@@ -250,11 +265,19 @@ def results():
 
 def update_statistics():
     if board.board[6] > board.board[13]:
-        current_user.wins += 1
+        if user_starts:
+            current_user.wins += 1
+        else:
+            current_user.loses += 1
+
     elif board.board[6] == board.board[13]:
         current_user.draws += 1
+
     else:
-        current_user.loses += 1
+        if user_starts:
+            current_user.loses += 1
+        else:
+            current_user.wins += 1
     db.session.commit()
 
 
