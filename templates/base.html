@@ -1,3 +1,5 @@
+{% from "macros.html" import show_flash_message, show_all_flash_message %}
+
 <!doctype html>
 <html lang="en" class="h-100">
   <head>
@@ -73,10 +75,17 @@
   </head>
   <body class="d-flex h-100 text-center text-white bg-dark">
 
+
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
   <header class="mb-auto">
+
         {% block header %}
         {% endblock %}
+
+        <br>
+        <br>
+
+        {{ show_all_flash_message() }}
   </header>
 
   <main>

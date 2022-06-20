@@ -137,3 +137,8 @@ class Board:
         print(line)
         print("%1s%4s %4s %4s %4s %4s %4s" % (" ", "0", "1", "2", "3", "4", "5"))
         print("%20s \n" % "Player1")
+
+    def refresh(self):
+        self.board = [4 for i in range(14)]
+        self.board[13] = 0
+        self.board[6] = 0

@@ -4,16 +4,6 @@
 
     <link href="../static/bootstrap/styles/signin.css" rel="stylesheet">
 
-    <script>
-
-        function Previous() {
-            window.history.back()
-            window.location.replace('{{ url_for('create_account') }}')
-        }
-
-
-    </script>
-
 {% endblock %}
 
 
@@ -24,17 +14,17 @@
     <h1 class="h3 mb-3 fw-normal mb-md-5 fs-1">Please sign in</h1>
 
     <div class="form-floating text-black">
-      <input type="text" class="form-control" id="floatingInput" placeholder="Nick" required>
+      <input type="text" class="form-control" id="floatingInput" name="nick" placeholder="Nick" required>
       <label for="floatingInput">Nick</label>
     </div>
 
     <div class="form-floating text-black">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+      <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required>
       <label for="floatingPassword">Password</label>
     </div>
 
     <br><br>
-    <button class="w-100 btn btn-lg btn-primary" type="submit" onclick="Previous()">Sign in</button>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
 
     <br><br>
     <h6><a href="{{ url_for('create_account') }}">Don't have an account? Create one</a></h6>

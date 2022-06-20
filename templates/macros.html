@@ -1,0 +1,26 @@
+{% macro show_flash_message(message) %}
+
+    <div style="size: 27px; color: white; background-color: rebeccapurple"> {{ message }} </div>
+
+{% endmacro %}
+
+
+{% macro show_all_flash_message() %}
+
+    {% for message in get_flashed_messages() %} 
+        {{ show_flash_message(message) }}
+    {% endfor %}
+
+{% endmacro %}
+
+
+{% macro add_navbar() %}
+
+      <h3 class="float-md-start mb-0">Kalaha</h3>
+      <nav class="nav nav-masthead justify-content-center float-md-end">
+        <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="{{ url_for('home') }}">Home</a>
+        <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="{{ url_for('statistics') }}">Statistics</a>
+        <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="{{ url_for('sign_out') }}">Sign out</a>
+      </nav>
+
+{% endmacro %}
