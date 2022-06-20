@@ -63,6 +63,7 @@
         -webkit-overflow-scrolling: touch;
       }
 
+
     </style>
 
     <!-- Custom styles for this template -->
@@ -76,8 +77,8 @@
   <body class="d-flex h-100 text-center text-white bg-dark">
 
 
-<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-  <header class="mb-auto">
+<div class="header-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <header class="mb-auto container-fluid">
 
         {% block header %}
         {% endblock %}
@@ -88,10 +89,12 @@
         {{ show_all_flash_message() }}
   </header>
 
+<div class="cover-container justify-content-center d-flex w-100 h-100 p-3 mx-auto flex-column">
   <main>
         {% block main %}
         {% endblock %}
   </main>
+  </div>
 
   <footer class="mt-auto text-white-50">
     <p>Kalaha game app created by Zuzanna Sikorska</p>

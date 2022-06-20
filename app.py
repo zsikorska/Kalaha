@@ -231,10 +231,12 @@ def home():
 @login_required
 def results():
     global first_player
+    global running_game
 
     if request.method == 'POST':
         if request.form['button'] == 'play':
             board.refresh()
+            running_game = True
             if mode == 'human':
                 first_player = True
                 return redirect('/game')
@@ -259,7 +261,8 @@ def update_statistics():
 @app.route('/statistics', methods=["GET", "POST"])
 @login_required
 def statistics():
-    return render_template('statistics.html')
+    return render_template('statistics.html',
+                           wins=current_user.wins, draws=current_user.draws, loses=current_user.loses)
 
 
 if __name__ == '__main__':
