@@ -1,4 +1,14 @@
 class Board:
+    """
+    Class represents the board of the game:
+    board[0] - board[5] -> player1's houses
+    board[6] -> player1's base
+    board[7] - board[12] -> player2's houses
+    board[13] -> player2's base
+    player1 begins the game
+    first - True if player1, False if player2
+    """
+
     def __init__(self):
         self.board = [4 for i in range(14)]
         self.board[13] = 0
@@ -11,6 +21,7 @@ class Board:
     2 => wrong move
     '''
 
+    # Function for moving from specific house by specific player
     def move(self, house, first):
         code = 0
 
@@ -21,6 +32,7 @@ class Board:
             self.board[house] = 0
             next_house = house
 
+            # Moving stones from house, each stone to the next house (and player's base)
             while number_of_stones > 0:
                 next_house = (next_house + 1) % 14
                 if (first and next_house == 13) or (not first and next_house == 6):
@@ -36,6 +48,7 @@ class Board:
 
         return code
 
+    # Function returns True if last stone lands in the player's base
     @staticmethod
     def last_stone_in_base(first, last_house):
         if first and last_house == 6:
@@ -45,6 +58,8 @@ class Board:
         else:
             return False
 
+    # Function takes stones of opponent if last stone lands in empty house and opponent has stones in opposite house
+    # True if stones were taken
     def take_opposite_stones(self, first, last_house):
         if self.board[last_house] == 1 and self.board[12 - last_house] != 0:
             if first and last_house <= 5:
@@ -59,6 +74,7 @@ class Board:
                 return True
         return False
 
+    # Function checks if player chose the right house
     def check_house(self, house, first):
         if house < 0 or house > 13:
             return False
@@ -71,6 +87,7 @@ class Board:
         else:
             return house >= 7
 
+    # Function returns the list of possible moves (numbers of houses from which player can move)
     def possible_moves(self, first):
         list_of_moves = []
         if first:
@@ -83,6 +100,8 @@ class Board:
                     list_of_moves.append(i)
         return list_of_moves
 
+    # Function moves stones of the player's opponent to his base
+    # It happens when it's the end of game and player does not have possible moves
     def end_of_game(self, first):
         if first:
             for i in range(7, 13):
@@ -93,51 +112,25 @@ class Board:
                 self.board[6] += self.board[i]
                 self.board[i] = 0
 
+    # Function checks if player has possible moves
     def is_end_of_game(self, first):
         return self.possible_moves(first) == []
 
-    def print_who_win(self):
-        print()
-        print("##### Results #####")
-        print("\n%8s %3s %8s" % ("player1", "vs", "player2"))
-        print("\n%4d %8s %4d \n" % (self.board[6], "", self.board[13]))
-
-        if self.board[6] > self.board[13]:
-            print("Player1 won !!!")
-        elif self.board[6] == self.board[13]:
-            print("Draw !!!")
-        else:
-            print("Player2 won !!!")
-
+    # Function counts the deficit between bases of the players
     def count_difference(self, first):
         if first:
             return self.board[6] - self.board[13]
         else:
             return self.board[13] - self.board[6]
 
+    # Function returns the cloned board
     def clone(self):
         new_board = Board()
         for i in range(14):
             new_board.board[i] = self.board[i]
         return new_board
 
-    def print_board(self):
-        print()
-        print("%20s" % "Player2")
-        print("%1s%4s %4s %4s %4s %4s %4s" % (" ", "12", "11", "10", "9", "8", "7"))
-        line = " "
-        for i in range(32):
-            line += "-"
-        print(line)
-        print("%1s%4d %4d %4d %4d %4d %4d%3s%1s" % ("|", self.board[12], self.board[11], self.board[10],
-              self.board[9], self.board[8], self.board[7], " ", "|"))
-        print("%1s%4d %19s %4d%3s%1s" % ("|", self.board[13], "", self.board[6], " ", "|"))
-        print("%1s%4d %4d %4d %4d %4d %4d%3s%1s" % ("|", self.board[0], self.board[1], self.board[2], self.board[3],
-              self.board[4], self.board[5], " ", "|"))
-        print(line)
-        print("%1s%4s %4s %4s %4s %4s %4s" % (" ", "0", "1", "2", "3", "4", "5"))
-        print("%20s \n" % "Player1")
-
+    # Function refreshes the board to the start settings
     def refresh(self):
         self.board = [4 for i in range(14)]
         self.board[13] = 0

@@ -25,12 +25,14 @@ def create_all():
 
 
 # reload the user object from the user ID stored in the session
-# function should take the str ID of a user, and return the corresponding user object
+# function should take the str ID of a user, and returns the corresponding user object
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+# function renders a start page template
+# if user is authenticated, he is redirected to his home page
 @app.route('/')
 def start():
     if current_user.is_authenticated:
@@ -39,6 +41,9 @@ def start():
         return render_template('start.html')
 
 
+# function renders a page for sign in
+# if user is authenticated, he is redirected to his home page
+# method 'POST' checks users login and password and redirects to users home page or displays proper message
 @app.route('/sign_in', methods=["GET", "POST"])
 def sign_in():
     if request.method == 'POST':
@@ -51,7 +56,7 @@ def sign_in():
             flash(f"User with the nick {nick} does not exist.")
             return redirect('/sign_in')
 
-        elif bcrypt.check_password_hash(user.password, password):
+        elif bcrypt.check_password_hash(user.password, password):  # checking hashed password
             login_user(user)
             return redirect('/home')
 
@@ -66,6 +71,9 @@ def sign_in():
             return render_template('sign_in.html')
 
 
+# function renders a page for creating account
+# if user is authenticated, he is redirected to his home page
+# method 'POST' checks if user exist in base and redirects to users home page or displays proper message
 @app.route('/create_account', methods=["GET", "POST"])
 def create_account():
     if request.method == 'POST':
@@ -100,6 +108,7 @@ def create_account():
             return render_template('create_account.html')
 
 
+# logout the user, stops game if running, refreshes the board and redirects to start page
 @app.route('/sign_out')
 @login_required
 def sign_out():
@@ -111,14 +120,17 @@ def sign_out():
     return redirect('/')
 
 
+# global variables
 board = Board()
-first_player = True
+first_player = True  # True if is the turn of player1, False if player2
 ai = AIPlayer(False)
 mode = 'human'
 running_game = False
-user_starts = True
+user_starts = True  # True if user is player1 (he begins the game), False if player2
 
 
+# Function displays board, players can click proper button in order to move from specific house
+# if end of game statistics are updated and user is redirected to results
 @app.route('/game', methods=["GET", "POST"])
 @login_required
 def play_with_human():
@@ -128,16 +140,13 @@ def play_with_human():
 
     if request.method == 'POST':
         house = int(request.form['house'])
-        print(house)
         code = board.move(house, first_player)
-        board.print_board()
 
         match code:
-            case 0:
+            case 0:  # change of players
                 first_player = not first_player
                 return redirect('/game')
-            case 1:
-                print("You have an additional move")
+            case 1:  # additional move
                 return redirect('/game')
     else:
         mode = 'human'
@@ -149,6 +158,9 @@ def play_with_human():
         return render_template('board.html', moves=board.possible_moves(first_player), board=board.board)
 
 
+# Function displays board, user can click proper button in order to move from specific house
+# if is AI turn the proper function is called
+# if end of game statistics are updated and user is redirected to results
 @app.route('/gameAI', methods=["GET", "POST"])
 @login_required
 def play_with_ai():
@@ -157,15 +169,12 @@ def play_with_ai():
 
     if request.method == 'POST':
         house = int(request.form['house'])
-        print(house)
         code = board.move(house, user_starts)
-        board.print_board()
 
         match code:
-            case 0:
+            case 0:  # change of players
                 return ai_move()
-            case 1:
-                print("You have an additional move")
+            case 1:  # additional move
                 return redirect('/gameAI')
     else:
         mode = 'ai'
@@ -177,6 +186,8 @@ def play_with_ai():
         return render_template('board.html', moves=board.possible_moves(user_starts), board=board.board)
 
 
+# Function responsible for making AI move
+# if end of game statistics are updated and user is redirected to results
 def ai_move():
     global running_game
 
@@ -188,16 +199,15 @@ def ai_move():
 
     house = ai.make_move(board)
     code = board.move(house, ai.first)
-    board.print_board()
 
     match code:
-        case 0:
+        case 0:     # change of players
             return redirect('/gameAI')
-        case 1:
-            print("You have an additional move")
+        case 1:     # additional move
             return ai_move()
 
 
+# Function displays home page, user can choose the settings of the game and after submitting redirected to game page
 @app.route('/home', methods=["GET", "POST"])
 @login_required
 def home():
@@ -206,39 +216,43 @@ def home():
     global user_starts
 
     if request.method == 'POST':
+        # play with other human
         if request.form['play'] == 'human':
             board.refresh()
             running_game = True
             first_player = True
-            user_starts = (int(request.form['player']) == 1)
-            print(user_starts)
+            user_starts = (int(request.form['player']) == 1)        # which player the user wants to be
             return redirect('/game')
 
+        # play with AI
         elif request.form['play'] == 'ai':
             board.refresh()
             running_game = True
             first_player = True
-            user_starts = (int(request.form['player']) == 1)
-            print(user_starts)
+            user_starts = (int(request.form['player']) == 1)        # which player the user wants to be
             ai.first = not user_starts
-            ai.level = int(request.form['ai level'])
+            ai.level = int(request.form['ai level'])                # set the level of AI
 
             if user_starts:
                 return redirect('/gameAI')
             else:
                 return ai_move()
 
+        # resume game (with human with previous settings)
         elif mode == 'human':
             return redirect('/game')
 
+        # resume game (with AI with previous settings)
         else:
             return redirect('/gameAI')
 
     else:
-        print(current_user.nick, current_user.wins, current_user.draws, current_user.loses)
         return render_template('home.html', resume=running_game)
 
 
+# Function displays results
+# if user wants to play again, he is redirected to game page with the same settings
+# if not, he is redirected to his home page
 @app.route('/results', methods=["GET", "POST"])
 @login_required
 def results():
@@ -263,6 +277,7 @@ def results():
         return render_template('results.html', score1=board.board[6], score2=board.board[13])
 
 
+# Function updates the data about wins, draws and loses of the user in the database
 def update_statistics():
     if board.board[6] > board.board[13]:
         if user_starts:
@@ -281,6 +296,7 @@ def update_statistics():
     db.session.commit()
 
 
+# Function displays statistics
 @app.route('/statistics', methods=["GET", "POST"])
 @login_required
 def statistics():

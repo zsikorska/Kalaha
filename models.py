@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
+# table with data of users: data for authentication and statistics
 class User(db.Model, UserMixin):
     __tablename__ = 'Users'
     id = db.Column(db.Integer, primary_key=True)
@@ -12,15 +13,6 @@ class User(db.Model, UserMixin):
     wins = db.Column(db.Integer, nullable=False)
     draws = db.Column(db.Integer, nullable=False)
     loses = db.Column(db.Integer, nullable=False)
-
-    def set_wins(self, value):
-        self.wins = value
-
-    def set_draws(self, value):
-        self.wins = value
-
-    def set_loses(self, value):
-        self.wins = value
 
     def __repr__(self):
         return '<User %r>' % self.nick
