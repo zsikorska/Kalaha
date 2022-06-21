@@ -1,11 +1,84 @@
 {% extends "base.html" %}
 {% from "macros.html" import add_navbar %}
 
+{% block head %}
+    <style>
+.column {
+  width: calc(33% - 30px);
+  padding: 0 15px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+.card {
+  background: #8fb1ff 0% 0% no-repeat padding-box;
+  border-radius: 20px;
+  opacity: 1;
+  overflow: hidden;
+}
+
+</style>
+{% endblock %}
+
+
 {% block header %}
     {{ add_navbar() }}
 {% endblock %}
 
-{% block main %}
 
+{% block main %}
+ <div class="row">
+    <div class="column">
+
+<div class="card">
+  <img src="../static/images/wins.jpg" style="width:100%">
+  <div class="container">
+    <h4><b>WINS</b></h4>
+    <h3><b>{{ wins }}</b></h3>
+  </div>
+</div>
+</div>
+
+    <div class="column">
+
+<div class="card">
+  <img src="../static/images/draws.JPG" style="width:100%">
+  <div class="container">
+    <h4><b>DRAWS</b></h4>
+    <h3><b>{{ draws }}</b></h3>
+  </div>
+</div>
+</div>
+
+    <div class="column">
+
+<div class="card">
+  <img src="../static/images/loses.jpg" style="width:100%">
+  <div class="container">
+    <h4><b>LOSES</b></h4>
+    <h3><b>{{ loses }}</b></h3>
+  </div>
+</div>
+</div>
+
+ </div>
 
 {% endblock %}
